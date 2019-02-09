@@ -1,12 +1,30 @@
 import React, { useState } from "react"
-import create from "./network"
+import networkService from "./network"
 
-export const Numbers = ({ persons }) => {
-  let rows = persons.map(person => (
-    <p key={person.name}>
-      {person.name} {person.number}
-    </p>
-  ))
+const updateList = (setShown, setPersons) => {
+  networkService.getAll().then(response => {
+    setPersons(response)
+    setShown(response)
+  })
+}
+
+export const Numbers = ({ persons, setShown, setPersons, setErrorMessage}) => {
+  const handleClick = person => {
+    if (window.confirm(`poistetaanko ${person.name}`)) {
+      networkService.remove(person.id).then(() => {
+        updateList(setShown, setPersons)
+      }).catch(response => setErrorMessage(`error removing ${person.name}, already removed`))
+    }
+  }
+
+  let rows = persons.map(person => {
+    return (
+      <p key={person.name}>
+        {person.name} {person.number}{" "}
+        <button onClick={() => handleClick(person)}>poista</button>
+      </p>
+    )
+  })
   return rows
 }
 
@@ -18,23 +36,28 @@ export const PersonForm = props => {
     event.preventDefault()
 
     let found = false
+    let id = -1
     for (let i = 0; i < props.persons.length; i++) {
-      if (
-        props.persons[i].name === newName &&
-        props.persons[i].number === newNumber
-      ) {
+      if (props.persons[i].name === newName) {
         found = true
+        id = props.persons[i].id
         break
       }
     }
 
+    let new_person = { name: newName, number: newNumber }
     if (found) {
-      alert("$(newName) on jo luettelussa")
+      if (window.confirm(`${newName} on jo luettelussa, haluutko korvata`)) {
+        networkService
+          .put(new_person, id)
+          .then(() => updateList(props.setShown, props.setPersons))
+          .catch('error changing the number')
+      }
     } else {
-      let new_person = { name: newName, number: newNumber }
-      let clone = create(new_person)
-
-      props.setPersons(clone)
+      networkService
+        .post(new_person)
+        .then(response => updateList(props.setShown, props.setPersons))
+        .catch(response => props.setErrorMessage('error adding new person to list'))
     }
   }
 
@@ -52,3 +75,5 @@ export const PersonForm = props => {
     </form>
   )
 }
+
+

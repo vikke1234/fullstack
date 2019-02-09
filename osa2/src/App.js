@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
-import {Numbers, PersonForm} from './phonerecords'
+import network from "./network"
+import { Numbers, PersonForm } from "./phonerecords"
+import "./app.css"
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+  return <div className="error">{message}</div>
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [shown, setShown] = useState(persons)
+  const [errorMessage, setErrorMessage] = useState(null)
+
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then(response => {
-      console.log("response gotten")
-      setPersons(response.data)
-      setShown(response.data)
+    network.getAll().then(response => {
+      setPersons(response)
+      setShown(response)
     })
   }, [])
 
@@ -21,13 +29,23 @@ const App = () => {
     <div>
       <h2>Puhelinluettelo</h2>
       rajaa: <input onChange={event => filter(event.target.value)} />
-
       <h3>lisäää uusi</h3>
-      <PersonForm persons={persons} setPersons={setPersons} setShown = {setShown} />
-
+      <PersonForm
+        persons={persons}
+        setPersons={setPersons}
+        setShown={setShown}
+        setErrorMessage = {setErrorMessage}
+      />
+      <Notification message={errorMessage} />
       <h2>Numerot</h2>
       <div>
-        <Numbers persons={shown} />
+        <Numbers 
+        persons={shown} 
+        setShown={setShown} 
+        setPersons={setPersons} 
+        setErrorMessage = {setErrorMessage}
+        />
+
       </div>
     </div>
   )
