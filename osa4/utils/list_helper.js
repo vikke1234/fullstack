@@ -7,7 +7,9 @@ const sum = (sum, item) => {
   return sum + item.likes
 }
 const totalLikes = blogs => {
-
+  if (blogs.length === 0) {
+    return 0
+  }
   let likes = blogs.reduce(sum, 0)
   return likes
 }

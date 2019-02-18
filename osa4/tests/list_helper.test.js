@@ -114,6 +114,10 @@ describe("most blogs", () => {
 })
 
 describe("most likes", () => {
+  test("with 0 blogs", () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toBe(undefined)
+  })
   test("with one blog", () => {
     const result = listHelper.mostLikes(listWithOneBlog)
     expect(result).toEqual({ likes: 5, author: "Edsger W. Dijkstra" })
