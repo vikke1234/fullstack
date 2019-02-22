@@ -8,7 +8,7 @@ const Input = ({ label, setter }) => (
   </div>
 )
 
-const BlogForm = ({ setBlogs, setMessage }) => {
+const BlogForm = ({ blogs, setBlogs, setMessage }) => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
@@ -16,11 +16,11 @@ const BlogForm = ({ setBlogs, setMessage }) => {
   const createBlog = async e => {
     e.preventDefault()
     try {
-      await blogService.post({ title, author, url })
-      const blogs = await blogService.getAll()
+      const returnedblog = await blogService.post({ title, author, url })
       /* jostai syyst ni ei updatee heti listaa, pakko refreshaa */
-      console.log(blogs)
-      setBlogs(blogs)
+      console.log(returnedblog);
+      
+      setBlogs(blogs.concat(returnedblog))
       setMessage(`a new blog ${title} has been added`)
       setTimeout(() => setMessage(null), 2000)
     } catch (exception) {
