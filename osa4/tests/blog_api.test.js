@@ -52,7 +52,7 @@ describe("posting blogs", async () => {
   test("a valid blog can be added", async () => {
     await api
       .post("/api/blogs")
-      .set({ Authorization: "Bearer " + token })
+      .set({ Authorization: token })
       .send(helper.valid_data)
       .expect(200)
       .expect("Content-Type", /application\/json/)
@@ -67,7 +67,7 @@ describe("posting blogs", async () => {
   test("an invalid blog cannot be added", async () => {
     await api
       .post("/api/blogs")
-      .set({ Authorization: "Bearer " + token })
+      .set({ Authorization: token })
       .send(helper.invalid_data)
       .expect(400)
 
@@ -79,7 +79,7 @@ describe("posting blogs", async () => {
   test("post without likes", async () => {
     await api
       .post("/api/blogs")
-      .set({ Authorization: "Bearer " + token })
+      .set({ Authorization: token })
       .send(helper.data_without_likes)
       .expect(200)
       .expect("Content-Type", /application\/json/)
