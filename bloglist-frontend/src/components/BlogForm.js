@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import blogService from "../services/blogs"
 
 const Input = ({ label, setter }) => (
@@ -18,8 +18,8 @@ const BlogForm = ({ blogs, setBlogs, setMessage }) => {
     try {
       const returnedblog = await blogService.post({ title, author, url })
       /* jostai syyst ni ei updatee heti listaa, pakko refreshaa */
-      console.log(returnedblog);
-      
+      console.log(returnedblog)
+
       setBlogs(blogs.concat(returnedblog))
       setMessage(`a new blog ${title} has been added`)
       setTimeout(() => setMessage(null), 2000)

@@ -11,6 +11,8 @@ const LoginForm = props => {
       const token = await loginService.login(username, password)
       props.setToken(token)
       window.localStorage.setItem("token", JSON.stringify(token))
+      setUsername("")
+      setPassword("")
     } catch (exception) {
       props.setMessage("error logging in, invalid username or password")
       setTimeout(() => props.setMessage(null), 1500)

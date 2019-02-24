@@ -4,7 +4,7 @@ const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 const logger = require("../utils/logger")
 
-blogRouter.get("/", async (request, response, next) => {
+blogRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { blogs: 0 })
   response.json(blogs.map(blog => blog.toJSON()))
 })
@@ -65,7 +65,8 @@ blogRouter.put("/:id", async (request, response, next) => {
     author: data.author,
     title: data.title,
     url: data.url,
-    likes: data.likes
+    likes: data.likes,
+    user: data.user.id
   }
 
   try {

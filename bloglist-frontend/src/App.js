@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
 import blogService from "./services/blogs"
 import Display from "./components/Display"
-import "./notification.css"
+import "./App.css"
+
 const Notification = ({ message }) => {
   if (message === null) {
     return null
@@ -18,7 +19,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [token, setToken] = useState(null)
   const [message, setMessage] = useState(null)
-  
+
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
