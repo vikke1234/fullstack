@@ -26,12 +26,24 @@ blogRouter.post("/", async (request, response, next) => {
       url: body.url,
       likes: body.likes === undefined ? 0 : body.likes,
       user: user._id
-    })
-
+    }).populate("user")
+    console.log(blog)
+    
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog.id)
     await user.save()
-    response.json(savedBlog.toJSON())
+    /* dirty hack to get the username/name */
+    let returnedblog = {
+      id: blog._id,
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes === undefined ? 0 : body.likes,
+      user: { username: user.username, name: user.name }
+    }
+    console.log(returnedblog)
+
+    response.json(returnedblog)
   } catch (exception) {
     next(exception)
   }

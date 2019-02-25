@@ -33,6 +33,7 @@ const Display = ({ blogs, setBlogs, token, setToken, setMessage }) => {
       })
       .map(blog => <Blog key={blog.id} blog={blog} setBlogs={setBlogs} />)
   }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -40,7 +41,12 @@ const Display = ({ blogs, setBlogs, token, setToken, setMessage }) => {
       <p>{token.name} is logged in </p>
       <button onClick={() => logout()}>log out</button>
       <Toggleable buttonLabel="create" undoButton={"cancel"}>
-        <BlogForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} />
+        <BlogForm
+          blogs={blogs}
+          setBlogs={setBlogs}
+          token={token}
+          setMessage={setMessage}
+        />
       </Toggleable>
       {appendedBlogs}
     </div>

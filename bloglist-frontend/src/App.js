@@ -23,6 +23,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
+  
   useEffect(() => {
     const userJSON = window.localStorage.getItem("token")
 
@@ -31,7 +32,7 @@ const App = () => {
       setToken(user)
       blogService.setToken(user.token)
     }
-  })
+  }, [])
 
   return (
     <div>
