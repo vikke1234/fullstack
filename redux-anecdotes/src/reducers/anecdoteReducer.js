@@ -1,3 +1,4 @@
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -34,15 +35,10 @@ export const createAnecdote = content => {
 }
 
 const reducer = (state = initialState, action) => {
-  console.log("state now: ", state)
-  console.log("action", action)
-
   switch (action.type) {
     case "VOTE":
       const id = action.data.id
       const anecdoteToChange = state.find(anecdote => anecdote.id === id)
-
-      console.log(anecdoteToChange)
 
       const changedAnecdote = {
         ...anecdoteToChange,
