@@ -28,6 +28,7 @@ export const voteAnecdote = id => {
 }
 
 export const createAnecdote = content => {
+  
   return {
     type: "CREATE",
     data: { content: content, id: getId(), votes: 0 }
@@ -35,6 +36,8 @@ export const createAnecdote = content => {
 }
 
 const reducer = (state = initialState, action) => {
+  console.log("ACTION: ", action);
+  
   switch (action.type) {
     case "VOTE":
       const id = action.data.id

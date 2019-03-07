@@ -1,40 +1,32 @@
 import React from "react"
 import { voteAnecdote } from "../reducers/anecdoteReducer"
 import { setMessage, removeMessage } from "../reducers/notificationReducer"
+import { connect } from "react-redux"
 
-const Anecdote = ({ key, content, votes, onClick }) => (
-  <div key={key}>
-    <div>{content}</div>
+const Anecdote = ({ content, votes, onClick }) => {
+  
+  return (
     <div>
-      has {votes}
-      <button onClick={onClick}>vote</button>
+      <div>{content}</div>
+      <div>
+        has {votes} <button onClick={onClick}>vote</button>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
-const AnecdoteList = props => {
-  const store = props.store
-  const { anecdotes, filter } = store.getState()
+const Anecdotes = props => {
   const vote = id => {
-    const anecdote = voteAnecdote(id)
-    const message = anecdotes.find(a => a.id === anecdote.data.id).content
+    const anecdote = props.voteAnecdote(id)
+    const message = props.anecdotes.find(a => a.id === anecdote.data.id).content
 
-    store.dispatch(anecdote)
-    store.dispatch(setMessage(message))
-    setTimeout(() => store.dispatch(removeMessage()), 5000)
-  }
-
-  const anecdotesToShow = () => {
-    if (filter === "ALL") {
-      return anecdotes
-    }
-
-    return anecdotes.filter(anecdote => anecdote.content.includes(filter))
+    props.setMessage(message)
+    setTimeout(() => props.removeMessage(), 5000)
   }
 
   return (
     <div>
-      {anecdotesToShow().map(anecdote => (
+      {props.visibleAnecdotes.map(anecdote => (
         <Anecdote
           key={anecdote.id}
           content={anecdote.content}
@@ -46,4 +38,32 @@ const AnecdoteList = props => {
   )
 }
 
-export default AnecdoteList
+const anecdotesToShow = ({anecdotes, filter}) => {
+  if (filter === "ALL") {
+    return anecdotes
+  }
+
+  return anecdotes.filter(anecdote =>
+    anecdote.content.includes(filter)
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    anecdotes: state.anecdotes,
+    filter: state.filter,
+    message: state.message,
+    visibleAnecdotes: anecdotesToShow(state)
+  }
+}
+
+const mapDispatchToProps = {
+  voteAnecdote,
+  removeMessage,
+  setMessage
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Anecdotes)
