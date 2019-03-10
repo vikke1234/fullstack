@@ -16,10 +16,13 @@ const Anecdote = ({ content, votes, onClick }) => {
 }
 
 const Anecdotes = props => {
-  const vote = id => {
-    const anecdote = props.voteAnecdote(id)
-    const message = props.anecdotes.find(a => a.id === anecdote.data.id).content
-
+  const vote = async id => {
+    const anecdote = await props.voteAnecdote(id)
+    console.log(anecdote);
+    
+    const message = anecdote.data.content
+    console.log(message);
+    
     props.setMessage(message)
     setTimeout(() => props.removeMessage(), 5000)
   }

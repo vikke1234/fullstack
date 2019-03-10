@@ -1,4 +1,5 @@
 export const setMessage = message => {
+  /* TODO 6.21 */
   return {
     type: "SET_NOTIFICATION",
     message
