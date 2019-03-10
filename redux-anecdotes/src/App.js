@@ -7,6 +7,7 @@ import Filter from "./components/Filter"
 import { initializeAnecdotes } from "./reducers/anecdoteReducer"
 
 const App = props => {
+  
   useEffect(() => {
     props.initializeAnecdotes()
   }, [])
