@@ -13,7 +13,6 @@ const Notification = props => {
   if (message === null) {
     return null
   }
-
   return <div style={style}>{message}</div>
 }
 
@@ -22,4 +21,5 @@ const mapStateToProps = state => {
     message: state.message
   }
 }
+
 export default connect(mapStateToProps)(Notification)

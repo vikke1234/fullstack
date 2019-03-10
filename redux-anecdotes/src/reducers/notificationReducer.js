@@ -1,14 +1,18 @@
-export const setMessage = message => {
+export const setNotification = (message, seconds) => {
   /* TODO 6.21 */
-  return {
-    type: "SET_NOTIFICATION",
-    message
+  return dispatch => {
+    return dispatch({
+      type: "SET_NOTIFICATION",
+      message
+    })
   }
 }
 
-export const removeMessage = () => {
-  return {
-    type: "REMOVE_NOTIFICATION"
+export const removeNotification = (seconds) => {
+  return dispatch => {
+    return dispatch({
+      type: "REMOVE_NOTIFICATION"
+    })
   }
 }
 
@@ -16,9 +20,9 @@ const notificationReducer = (state = null, action) => {
   console.log("ACTION: ", action);
   
   switch (action.type) {
-    case "SET_NOTIFICATION":
+    case "SET_NOTIFICATION":         
       return action.message
-    case "REMOVE_NOTIFICATION":
+    case "REMOVE_NOTIFICATION":      
       return null
     default:
       return state

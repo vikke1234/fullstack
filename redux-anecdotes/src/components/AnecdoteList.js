@@ -1,10 +1,9 @@
 import React from "react"
 import { voteAnecdote } from "../reducers/anecdoteReducer"
-import { setMessage, removeMessage } from "../reducers/notificationReducer"
+import { setNotification, removeNotification } from "../reducers/notificationReducer"
 import { connect } from "react-redux"
 
 const Anecdote = ({ content, votes, onClick }) => {
-  
   return (
     <div>
       <div>{content}</div>
@@ -17,14 +16,13 @@ const Anecdote = ({ content, votes, onClick }) => {
 
 const Anecdotes = props => {
   const vote = async id => {
+    const notify = (message, seconds) => {
+      props.setNotification(message)
+      setTimeout(() => props.removeNotification(), seconds * 1000)
+    }
     const anecdote = await props.voteAnecdote(id)
-    console.log(anecdote);
-    
     const message = anecdote.data.content
-    console.log(message);
-    
-    props.setMessage(message)
-    setTimeout(() => props.removeMessage(), 5000)
+    notify(message, 10)
   }
 
   return (
@@ -41,14 +39,12 @@ const Anecdotes = props => {
   )
 }
 
-const anecdotesToShow = ({anecdotes, filter}) => {
+const anecdotesToShow = ({ anecdotes, filter }) => {
   if (filter === "ALL") {
     return anecdotes
   }
 
-  return anecdotes.filter(anecdote =>
-    anecdote.content.includes(filter)
-  )
+  return anecdotes.filter(anecdote => anecdote.content.includes(filter))
 }
 
 const mapStateToProps = state => {
@@ -62,8 +58,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   voteAnecdote,
-  removeMessage,
-  setMessage
+  removeNotification,
+  setNotification
 }
 
 export default connect(
